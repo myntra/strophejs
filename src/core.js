@@ -1540,9 +1540,11 @@ Strophe.TimedHandler.prototype = {
  *  Returns:
  *    A new Strophe.Connection object.
  */
-Strophe.Connection = function (service, options) {
+Strophe.Connection = function (myntraHttpClient, service, options) {
     // The service URL
     this.service = service;
+    // Myntra http client
+    this.myntraHttpClient = myntraHttpClient
     // Configuration options
     this.options = options || {};
     const proto = this.options.protocol || "";

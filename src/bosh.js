@@ -8,6 +8,7 @@
 /* global window, setTimeout, clearTimeout, XMLHttpRequest, ActiveXObject */
 
 import core from './core';
+import JitsiResponse from './response'
 
 const Strophe = core.Strophe;
 const $build = core.$build;
@@ -626,7 +627,7 @@ Strophe.Bosh.prototype = {
             return;
         }
         const reqStatus = this._getRequestStatus(req);
-        this.lastResponseHeaders = req.xhr.getAllResponseHeaders();
+        // this.lastResponseHeaders = req.xhr.getAllResponseHeaders();
         if (this.disconnecting && reqStatus >= 400) {
             this._hitError(reqStatus);
             this._callProtocolErrorHandlers(req);
@@ -678,6 +679,11 @@ Strophe.Bosh.prototype = {
         } else if (too_many_retries && !this._conn.connected) {
             this._conn._changeConnectStatus(Strophe.Status.CONNFAIL, "giving-up");
         }
+    },
+
+    _onHttpClientResponse: function (func, resp) {
+        const res = new JitsiResponse();
+        // res.
     },
 
     /** PrivateFunction: _processRequest
@@ -749,7 +755,8 @@ Strophe.Bosh.prototype = {
                         }
                     }
                 }
-                req.xhr.send(req.data);
+                this._conn.myntraHttpClient(req)
+                // req.xhr.send(req.data);
             };
 
             // Implement progressive backoff for reconnects --
